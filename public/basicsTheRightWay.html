@@ -1,0 +1,46 @@
+
+
+<!-- This line of code specifically includes the Socket.IO client-side JavaScript library
+     on a web page, allowing a client to establish a connection with a Socket.IO server and
+      participate in real-time communication with other connected clients or the server itself.-->
+<!-- socket.io is added by the socket.io server-->
+<script src = '/socket.io/socket.io.js'></script>
+
+<script>
+    //socket.io.js is going to add the io object to the global scope
+    //console.log(io)
+
+    //This line of code establishes a connection between a Socket.IO client 
+    //and a Socket.IO server that is listening on http://localhost:8000.
+    /*
+    The io() function is provided by the Socket.IO client-side library and
+     it creates a new Socket.IO client instance. 
+     The argument passed to the function specifies the URL of the Socket.IO server to connect to. 
+     In this case, the URL is http://localhost:8000, which means the Socket.IO server is running on 
+     the same machine as the client, on port 8000.
+
+    Once the connection is established, the socket variable holds a reference to the Socket.IO client instance 
+    and can be used to send and receive messages to and from the server.
+     For example, you can use the socket.emit() method to send data to the server
+      and the socket.on() method to receive data from the server.
+
+
+    */
+    const socket = io('http://localhost:8000');
+    console.log(socket)
+
+    socket.on ('connect', () => {
+        console.log(socket.id);
+        socket.emit('messageFromClient', {data: 'Hello, from the browser'})
+})
+    socket.on ('messageFromServer', (data) => {
+        console.log(data);
+    })
+
+    //reconnect gives you number of attempt to reconnect
+    socket.io.on('reconnect', (data) => {
+        console.log('reconnect event');
+        console.log(data)
+    })
+
+</script>
